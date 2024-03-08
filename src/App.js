@@ -4,6 +4,7 @@ import pokemons from "./pokemon/pokemon.json";
 import PokemonCard from "./components/PokemonCard/PokemonCard";
 import { getColors } from "./utils/ReturnCardColor";
 import Header from "./components/Header/Header.js";
+
 const GlobalStyle = createGlobalStyle`
   *{
     padding: 0;
@@ -21,6 +22,8 @@ const CardsContainer = styled.div`
 function App() {
   const [pesquisa, setPesquisa] = useState("");
   const [idFilter, setIdFilter] = useState("");
+  const [type, setType] = useState("");
+  const [orderOption, setOrderOption] = useState("");
 
   return (
     <>
@@ -30,13 +33,36 @@ function App() {
         setIdFilter={setIdFilter}
         pesquisa={pesquisa}
         setPesquisa={setPesquisa}
+        type={type}
+        setType={setType}
+        orderOption={orderOption}
+        setOrderOption={setOrderOption}
       />
       <CardsContainer>
-        {pokemons.filter((pokemon) => {
-          return idFilter ? pokemon.id.includes(idFilter) : pokemon
-        })
+        {pokemons
           .filter((pokemon) => {
-            return pokemon.name.english.toLowerCase().includes(pesquisa.toLowerCase());
+            return idFilter ? pokemon.id.includes(idFilter) : pokemon;
+          })
+          .filter((pokemon) => {
+            return pokemon.name.english
+              .toLowerCase()
+              .includes(pesquisa.toLowerCase());
+          })
+          .filter((pokemon) => {
+            if (type !== "") {
+              return pokemon.type.includes(type);
+            } else {
+              return pokemon;
+            }
+          })
+          // .sort((a, b) => {
+          //   if(orderOption === "asc"){return a.name.english.localeCompare(b.name.english);
+          //   }else if(orderOption === "desc"){return b.name.english.localeCompare(a.name.english);
+          //   }
+          // })
+          .sort((a, b) => {
+            if(orderOption === "asc"){return a.name.english > b.name.english ? 1 : -1}
+            if(orderOption === "desc"){return a.name.english < b.name.english ? 1 : -1}
           })
           .map((pokemon) => {
             return (

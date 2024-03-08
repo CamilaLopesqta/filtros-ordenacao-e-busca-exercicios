@@ -27,13 +27,13 @@ const Header = (props) => {
     props.setPesquisa(e.target.value);
   };
 
-   const handleIdSearch = (e) => {
+  const handleIdSearch = (e) => {
     props.setIdFilter(e.target.value);
   };
 
   return (
     <Container>
-        <input
+      <input
         type="number"
         placeholder="Buscar por id"
         onChange={handleIdSearch}
@@ -42,18 +42,28 @@ const Header = (props) => {
       <input
         type="text"
         placeholder="Buscar por nome"
-        onChange={handleSearch}
         value={props.pesquisa}
+        onChange={handleSearch}
       />
-      <select>
+      <select
+        name="ordem"
+        id="ordem"
+        value={props.orderOption}
+        onChange={(e) => props.setOrderOption(e.target.value)}
+      >
         <option value="">Ordenar</option>
-        <option value="">Crescente</option>
-        <option value="">Decrescente</option>
+        <option value="asc">Crescente</option>
+        <option value="desc">Decrescente</option>
       </select>
+
       <select
         name="tipo"
         id="tipo"
-          >
+        value={props.type}
+        onChange={(ev) => {
+          props.setType(ev.target.value);
+        }}
+      >
         <option value="">Selecione um tipo</option>
         {pokemontypesArray.map((type) => {
           return (
